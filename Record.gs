@@ -16,8 +16,11 @@ function addDate() {
   }  else {
     // すやあのカレンダーを作成
     // カレンダー名を取得
-    var p_calendar_nm = "光ちゃん、すやあ";    
-    createEvent(p_calendar_nm, p_lastRow, null, null);
+    var p_calendar_nm = "すやあ";
+    // 睡眠時間を取得
+    var p_bed_time = p_sheet.getRange(p_lastRow, 1).getValue();
+    Logger.log("すやあの時間:" + p_bed_time);
+    createEvent(p_calendar_nm, p_bed_time, p_bed_time, null);
   }
 }
 
@@ -25,7 +28,7 @@ function addDate() {
 function isWakeup(x_row) {
   var p_sheet = SpreadsheetApp.getActiveSheet();  
   Logger.log("行の値:" + p_sheet.getRange(x_row, 2).getValue());
-  return p_sheet.getRange(x_row, 2).getValue() == "光ちゃん、おは" 
+  return p_sheet.getRange(x_row, 2).getValue() == "睡眠" 
 }
 
 // 睡眠履歴をカレンダーに作成する
@@ -38,15 +41,16 @@ function createSleepDiary(x_wakeup_row, x_sleep_row) {
   Logger.log("睡眠時間:" + p_sleeping_time);
 
   // カレンダーを作成する
-  var p_calendar_nm = "光ちゃん、おは";    
+  var p_calendar_nm = p_sheet.getRange(x_wakeup_row, 2).getValue();  // 睡眠を取得
   createEvent(p_calendar_nm, p_bed_time, p_wakeup_time, p_sleeping_time);
 }
 
 // カレンダーに日付をセットする
 function createEvent(x_calendar_nm, x_bed_time, x_wakeup_time, x_sleeping_time){
   Logger.log("カレンダー名:" + x_calendar_nm);
-
-  var p_calendar = CalendarApp.getCalendarById("kumimaru11m.h@gmail.com");
+  
+  // 光ちゃんカレンダー
+  var p_calendar = CalendarApp.getCalendarById("bgq6sq6oh7l7ptkig2lmboulq8@group.calendar.google.com");
   p_calendar.createEvent(x_calendar_nm, new Date(x_bed_time), new Date(x_wakeup_time) , {description: x_sleeping_time}); 
 }
 
@@ -66,40 +70,3 @@ function getDiff(x_bed_time, x_wakeup_time) {
   // 結果
   return p_hour + '時間' + p_minute + '分';
 }
-
-
-
-//// 起きた時間をカレンダーに追加
-//function createSleepCalendar(x_bed_time_row_num, x_wake_up_time_row_num) {
-//  
-//  Logger.log("寝た時間の最終行の行数:" + x_bed_time_row_num);
-//  Logger.log("起きた時間の最終行の行数:" + x_wake_up_time_row_num);
-//  
-//  // 設定するシートを取得
-//  var p_sheet = SpreadsheetApp.getActiveSheet();  
-//  
-//  // 最終行がおは であれば 光ちゃん、おは のカレンダーを作成する。このとき睡眠時間を作成する。
-//  // 最終行がすや であれば 光ちゃん、すやあ のカレンダーを作成する。このとき睡眠時間は作成しない。
-//  // カレンダー名を取得
-//  var p_calendar_nm;
-//  // すやあの時間を取得
-//  var p_bed_time = p_sheet.getRange(x_bed_time_row_num, 1).getValue();
-//
-//  // おはの値がなければカレンダー名はすやあとする。あればおは。
-//  if(p_sheet.getRange(x_wake_up_time_row_num, 1).isBlank()) {
-//    // カレンダー名を取得
-//    var p_calendar_nm = "光ちゃん、すやあ";
-//    // カレンダーを作成する
-//    createEvent(p_calendar_nm, p_bed_time, null, null);
-//
-//  } else {
-//    // カレンダー名を取得
-//    var p_calendar_nm = "光ちゃん、おはあ";
-//    // おはあの時間を取得
-//    var p_wake_up_time = p_sheet.getRange(x_wake_up_time_row_num, 1).getValue();
-//    // 睡眠時間を取得
-//    var p_sleeping_time = p_bed_time - p_wake_up_time;
-//    // カレンダーを作成する
-//    createEvent(p_calendar_nm, p_bed_time, p_wake_up_time, p_sleeping_time);
-//  }  
-//}
