@@ -16,7 +16,7 @@ function addDate() {
   }  else {
     // すやあのカレンダーを作成
     // カレンダー名を取得
-    var p_calendar_nm = "すやあ";
+    var p_calendar_nm = p_sheet.getRange(p_lastRow, 2).getValue();  // すやあを取得
     // 睡眠時間を取得
     var p_bed_time = p_sheet.getRange(p_lastRow, 1).getValue();
     Logger.log("すやあの時間:" + p_bed_time);
@@ -56,8 +56,14 @@ function createEvent(x_calendar_nm, x_bed_time, x_wakeup_time, x_sleeping_time){
 
 // 睡眠時間を取得
 function getDiff(x_bed_time, x_wakeup_time) {
+  // テスト用
+//  x_bed_time = '2018/12/16 8:19:58'
+//  x_wakeup_time = '2018/12/16 11:07:20'
+  
   var p_bed_time = Moment.moment(x_bed_time);
   var p_wakeup_time = Moment.moment(x_wakeup_time);
+  Logger.log("bed_time:" + p_bed_time);
+  Logger.log("wakeup_time:" + p_wakeup_time);
   
   // 時間計算
   var p_hour = p_wakeup_time.diff(p_bed_time,"h");
@@ -67,6 +73,11 @@ function getDiff(x_bed_time, x_wakeup_time) {
   var p_minute = p_wakeup_time.diff(p_bed_time,"m");
   Logger.log("p_minute:" + p_minute);
   
+  var p_mm = p_minute - (p_hour * 60);
+  Logger.log("分:" + p_mm);
+  
   // 結果
-  return p_hour + '時間' + p_minute + '分';
+  var p_result = p_hour + '時間' + p_mm + '分';
+  Logger.log('結果：' + p_result);
+  return p_result;
 }
