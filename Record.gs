@@ -50,7 +50,7 @@ function createEvent(x_calendar_nm, x_bed_time, x_wakeup_time, x_sleeping_time){
   Logger.log("カレンダー名:" + x_calendar_nm);
   
   // 光ちゃんカレンダー
-  var p_calendar = CalendarApp.getCalendarById("bgq6sq6oh7l7ptkig2lmboulq8@group.calendar.google.com");
+  var p_calendar = PropertiesService.getScriptProperties().getProperty("HIKARI_CALENDER");
   p_calendar.createEvent(x_calendar_nm, new Date(x_bed_time), new Date(x_wakeup_time) , {description: x_sleeping_time}); 
 }
 
